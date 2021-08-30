@@ -7,11 +7,18 @@ import (
 	"testing"
 )
 
-
 var httpClient=New()
 var uri ="http://127.0.0.1:8080/test/?paramA=123"
 
-
+func TestClientHead(t *testing.T) {
+	header:=make(map[string]string)
+	header["x-a"]="a"
+	res,err:=httpClient.Head(uri,header)
+	if err!=nil{
+		t.Errorf("Test_client_Delete has error, got:%v",err)
+	}
+	fmt.Printf("Test_client_Get:%v\n",res.Header)
+}
 func TestClientGet(t *testing.T) {
 	header:=make(map[string]string)
 	header["x-a"]="a"
@@ -20,13 +27,14 @@ func TestClientGet(t *testing.T) {
 		t.Errorf("Test_client_Delete has error, got:%v",err)
 	}
 	rs,_:=io.ReadAll(res.Body)
-	fmt.Printf("Test_client_Get:%v\n",rs)
+	fmt.Printf("Test_client_Get:%s\n",string(rs))
 }
 
 func TestClientPost(t *testing.T) {
 	header:=make(map[string]string)
 	header["x-a"]="a"
-	body:=strings.NewReader("this is body")
+	header["Content-Type"] = "application/json"
+	body:=strings.NewReader("{\"ping\":\"pong\"}")
 	res,err:=httpClient.Post(uri,header,body)
 	if err!=nil{
 		t.Errorf("Test_client_Delete has error, got:%v",err)
@@ -51,7 +59,8 @@ func TestClientPostForm(t *testing.T) {
 func TestClientPut(t *testing.T) {
 	header:=make(map[string]string)
 	header["x-a"]="a"
-	body:=strings.NewReader("this is body")
+	header["Content-Type"] = "application/json"
+	body:=strings.NewReader("{\"ping\":\"pong\"}")
 	res,err:=httpClient.Put(uri,header,body)
 	if err!=nil{
 		t.Errorf("Test_client_Delete has error, got:%v",err)
