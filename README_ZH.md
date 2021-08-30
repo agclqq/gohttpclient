@@ -1,5 +1,5 @@
 # gohttpclient
-This is a GO version of the restful API client that currently supports the following methods (including the WithContext method)：
+这是GO版本restful API客户端实现，目前支持以下方法 (包括WithContext的方法)：
 * Head
 * Get
 * Post
@@ -24,7 +24,7 @@ import (
 	"strings"
 )
 func main()  {
-	url:="http://127.0.0.1:8080/test/?t1=a"
+	url:="https://httpbin.org/"
 	header:=make(map[string]string)
 	header["x-a"]="abc0"
 
@@ -59,7 +59,7 @@ func main()  {
 	fmt.Printf("get request:\n  code of resGet:%d\n  header of resGet:%v\n  body of resGet:%s\n", resGet.StatusCode, resGet.Header,bodyGet)
 
 	//------post------
-	resPost,err:=client.Post(url,header,strings.NewReader(postData))
+	resPost,err:=client.Post(url+"post",header,strings.NewReader(postData))
 	if err!=nil {
 		fmt.Println(err)
 		return
@@ -70,10 +70,10 @@ func main()  {
 		fmt.Println(err)
 		return
 	}
-	fmt.Printf("post request:\n  code of resGet:%d\n  header of resGet:%v\n  body of resGet:%s\n", resGet.StatusCode, resGet.Header,bodyPost)
+	fmt.Printf("post request:\n  code of resPost:%d\n  header of resPost:%v\n  body of resGet:%s\n", resPost.StatusCode, resPost.Header,bodyPost)
 
 	//------postForm------
-	resPostForm,err:=client.PostForm(url,header,formData)
+	resPostForm,err:=client.PostForm(url+"post",header,formData)
 	if err!=nil {
 		fmt.Println(err)
 		return
@@ -84,12 +84,12 @@ func main()  {
 		fmt.Println(err)
 		return
 	}
-	fmt.Printf("postForm request:\n  code of resGet:%d\n  header of resGet:%v\n  body of resGet:%s\n", resGet.StatusCode, resGet.Header,bodyPostForm)
+	fmt.Printf("postForm request:\n  code of resPostForm:%d\n  header of resPostForm:%v\n  body of resPostForm:%s\n", resPostForm.StatusCode, resPostForm.Header,bodyPostForm)
 
 	//------put------
 	putHeader:=header
 	putHeader["Content-Type"] = "application/json"
-	resPut,err:=client.Put(url,putHeader,strings.NewReader(postData))
+	resPut,err:=client.Put(url+"put",putHeader,strings.NewReader(postData))
 	if err!=nil {
 		fmt.Println(err)
 		return
@@ -100,10 +100,10 @@ func main()  {
 		fmt.Println(err)
 		return
 	}
-	fmt.Printf("put request:\n  code of resGet:%d\n  header of resGet:%v\n  body of resGet:%s\n", resGet.StatusCode, resGet.Header,bodyPut)
+	fmt.Printf("put request:\n  code of resPut:%d\n  header of resPut:%v\n  body of resPut:%s\n", resPut.StatusCode, resPut.Header,bodyPut)
 
 	//------putForm------
-	resPutForm,err:=client.PutForm(url,header,formData)
+	resPutForm,err:=client.PutForm(url+"put",header,formData)
 	if err!=nil {
 		fmt.Println(err)
 		return
@@ -114,10 +114,10 @@ func main()  {
 		fmt.Println(err)
 		return
 	}
-	fmt.Printf("putForm request:\n  code of resGet:%d\n  header of resGet:%v\n  body of resGet:%s\n", resGet.StatusCode, resGet.Header,bodyPutForm)
+	fmt.Printf("putForm request:\n  code of resPutForm:%d\n  header of resPutForm:%v\n  body of resPutForm:%s\n", resPutForm.StatusCode, resPutForm.Header,bodyPutForm)
 
 	//------delete------
-	resDelete,err:=client.Delete(url,header)
+	resDelete,err:=client.Delete(url+"delete",header)
 	if err!=nil {
 		fmt.Println(err)
 		return
@@ -128,7 +128,6 @@ func main()  {
 		fmt.Println(err)
 		return
 	}
-	fmt.Printf("delete request:\n  code of resGet:%d\n  header of resGet:%v\n  body of resGet:%s\n", resGet.StatusCode, resGet.Header,bodyDelete)
-
+	fmt.Printf("delete request:\n  code of resDelete:%d\n  header of resDelete:%v\n  body of resDelete:%s\n", resDelete.StatusCode, resDelete.Header,bodyDelete)
 }
 ```
